@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+import pygameAdd commentMore actions
+import random
+import time
+
+# Inicialização
+pygame.init()
+
+# Tamanho da tela
+largura = 800
+altura = 600
+screen = pygame.display.set_mode((largura, altura))
+pygame.display.set_caption("Chuva de Amor Hacker")
+
+# Cores
+PRETO = (0, 0, 0)
+VERMELHO = (255, 0, 0)
+
+# Fonte
+fonte = pygame.font.SysFont("Courier", 36, bold=True)
+
+# Frase a ser usada
+frase = "EU TE AMO MUITO"
+
+# Criar várias posições de queda
+class TextoCaindo:
+    def __init__(self):
+        self.x = random.randint(0, largura - 100)
+        self.y = random.randint(-600, 0)
+        self.velocidade = random.randint(2, 7)
+
+    def atualizar(self):
+        self.y += self.velocidade
+        if self.y > altura:
+            self.y = random.randint(-600, 0)
+            self.x = random.randint(0, largura - 100)
+            self.velocidade = random.randint(2, 7)
+
+    def desenhar(self):
+        texto_surface = fonte.render(frase, True, VERMELHO)
+        screen.blit(texto_surface, (self.x, self.y))
+
+# Criar lista de textos
+textos = [TextoCaindo() for _ in range(20)]
+
+# Loop principal
+rodando = True
+relogio = pygame.time.Clock()
+
+while rodando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+
+    screen.fill(PRETO)
+
+    for texto in textos:
+        texto.atualizar()
+        texto.desenhar()
+
+    pygame.display.flip()
+    relogio.tick(60)
+
+pygame.quit()
